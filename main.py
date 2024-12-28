@@ -1,6 +1,6 @@
 from pymongo import MongoClient
 from wakeonlan import send_magic_packet
-from datetime import datetime
+from datetime import datetime, timezone
 import time
 import os
 from dotenv import load_dotenv
@@ -34,7 +34,7 @@ def get_bool_value_and_process():
                 {"key": "target_flag"},
                 {"$set": {
                     "bool_value": False,
-                    "updated_at": datetime.now(datetime.UTC),
+                    "updated_at": datetime.now(timezone.UTC),
                     "updated_by": UPDATED_BY
                 }}
             )
