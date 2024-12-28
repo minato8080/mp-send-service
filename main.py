@@ -14,6 +14,8 @@ DB_NAME = os.getenv("DB_NAME")
 COLLECTION_NAME = os.getenv("COLLECTION_NAME")
 TARGET_MAC_ADDRESS = os.getenv("TARGET_MAC_ADDRESS")
 INTERVAL_SECONDS = int(os.getenv("INTERVAL_SECONDS", 10))
+UPDATED_BY = os.getenv("UPDATED_BY")
+
 
 def get_bool_value_and_process():
     client = MongoClient(MONGO_URI)
@@ -33,7 +35,7 @@ def get_bool_value_and_process():
                 {"$set": {
                     "bool_value": False,
                     "updated_at": datetime.now(datetime.UTC),
-                    "updated_by": "rp-zero-wh"
+                    "updated_by": UPDATED_BY
                 }}
             )
             if update_result.modified_count > 0:
