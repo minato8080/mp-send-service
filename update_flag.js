@@ -1,7 +1,6 @@
 const dbName = process.env.DB_NAME;
 const updatedBy = process.env.UPDATED_BY;
 const target_machine = process.env.TARGET_MACHINE;
-const access_mode = process.env.ACCESS_MODE;
 
 use(dbName);
 
