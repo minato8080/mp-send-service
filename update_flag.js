@@ -9,9 +9,11 @@ const result = db.wol_info.updateOne(
   {
     $set: {
       wol_switch: true,
-      updated_time: new Date().toLocaleString("ja-JP", {
-        timeZone: "Asia/Tokyo",
-      }),
+      updated_time: new Date()
+        .toLocaleString("ja-JP", {
+          timeZone: "Asia/Tokyo",
+        })
+        .replace(/\//g, "-"),
       updated_name: updatedBy,
     },
   },

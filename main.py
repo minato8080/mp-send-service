@@ -22,7 +22,7 @@ def get_current_time():
     current_time = (
         datetime.now(timezone.utc)
         .astimezone(timezone(timedelta(hours=9)))
-        .strftime("%Y/%m/%d %H:%M:%S")
+        .strftime("%Y-%m-%d %H:%M:%S")
     )
     return current_time
 
