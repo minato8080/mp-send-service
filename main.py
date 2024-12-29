@@ -16,6 +16,7 @@ TARGET_MAC_ADDRESS = os.getenv("TARGET_MAC_ADDRESS")
 INTERVAL_SECONDS = int(os.getenv("INTERVAL_SECONDS", 10))
 UPDATED_BY = os.getenv("UPDATED_BY")
 TARGET_MACHINE = os.getenv("TARGET_MACHINE")
+LOG_PATH=os.getenv("LOG_PATH")
 
 
 def get_current_time():
@@ -29,7 +30,7 @@ def get_current_time():
 def write_log(message):
     current_time = get_current_time()
     print(f"{current_time} {message}")
-    with open("wol.log", "a", encoding="utf-8") as log_file:
+    with open(LOG_PATH, "a", encoding="utf-8") as log_file:
         log_file.write(f"{current_time} {message}\n")
 
 def watch_db():
