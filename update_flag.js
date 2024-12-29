@@ -1,16 +1,28 @@
 const dbName = process.env.DB_NAME;
 const updatedBy = process.env.UPDATED_BY;
+const target_machine = process.env.TARGET_MACHINE;
+const access_mode = process.env.ACCESS_MODE;
 
 use(dbName);
 
 const result = db.wol_info.updateOne(
-    { "key": "target_flag" },
-    { $set: { "bool_value": true, "updated_at": new Date(), "updated_by": updatedBy } },
-    { upsert: true }
+  { _id: target_machine },
+  {
+    $set: {
+      wol_switch: true,
+      updated_time: new Date().toLocaleString("ja-JP", {
+        timeZone: "Asia/Tokyo",
+      }),
+      updated_name: updatedBy,
+    },
+  },
+  { upsert: true }
 );
 
-if (result.matchedCount > 0) {
-    print("更新が成功しました。");
+if (result.matchedCount > 0 || result.upsertedCount > 0) {
+  print("Update successful.");
 } else {
-    print("更新に失敗しました。");
+  print("Update failed.");
 }
+const updatedDocument = db.wol_info.findOne({ _id: target_machine });
+print(updatedDocument);
