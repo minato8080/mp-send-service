@@ -26,6 +26,11 @@ def get_current_time():
     )
     return current_time
 
+def write_log(message):
+    current_time = get_current_time()
+    print(f"{current_time} {message}")
+    with open("wol.log", "a", encoding="utf-8") as log_file:
+        log_file.write(f"{current_time} {message}\n")
 
 def watch_db():
     client = MongoClient(MONGO_URI)
@@ -37,7 +42,7 @@ def watch_db():
         # データベースからwolフラグを取得
         document = collection.find_one({"_id": TARGET_MACHINE})
         if document and document.get("wol_switch") == True:
-            print(f"{current_time} Detected True value, sending magic packet.")
+            write_log("Detected True value, sending magic packet.")
             send_magic_packet(TARGET_MAC_ADDRESS)
 
             # MongoDBのドキュメントを更新
@@ -52,19 +57,18 @@ def watch_db():
                 },
             )
             if update_result.modified_count > 0:
-                print(f"{current_time} MongoDB document was successfully updated.")
+                write_log("MongoDB document was successfully updated.")
             else:
-                print(f"{current_time} Failed to update MongoDB document.")
+                write_log("Failed to update MongoDB document.")
     except Exception as e:
-        print(f"{current_time} An error occurred: {e}")
+        write_log(f"An error occurred: {e}")
     finally:
         client.close()
 
 
 # 定期実行ループ
 if __name__ == "__main__":
-    current_time = get_current_time()
-    print(f"{current_time} Service started.")
+    write_log("Service started.")
     while True:
         watch_db()
         time.sleep(INTERVAL_SECONDS)
